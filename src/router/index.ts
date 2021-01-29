@@ -5,7 +5,6 @@ import Account from "@/views/Account.vue";
 import Statistics from "@/views/Statistics.vue";
 import NotFound from "@/views/NotFound.vue";
 
-
 Vue.use(VueRouter);
 
 const routes = [
