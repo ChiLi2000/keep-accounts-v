@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    init
+    <router-link to="/detail"> detail </router-link>
+    <router-link to="/account"> account </router-link>
+    <router-link to="/statistics"> statistics </router-link>
+    <router-view/>
   </div>
 </template>
 
