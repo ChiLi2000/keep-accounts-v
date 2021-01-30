@@ -22,13 +22,9 @@
 </template>
 
 <script lang="ts">
-import x from "@/assets/icons/detail.svg";
-import y from "@/assets/icons/account.svg";
-import z from "@/assets/icons/statistics.svg";
-
-console.log(x);
-console.log(y);
-console.log(z);
+require("@/assets/icons/detail.svg");
+require("@/assets/icons/account.svg");
+require("@/assets/icons/statistics.svg");
 
 export default {
   name: "Nav"
@@ -60,8 +56,9 @@ nav {
 
     &.selected {
       color: #e1c748;
+
       svg {
-        fill:#e1c748;
+        fill: #e1c748;
       }
     }
   }
