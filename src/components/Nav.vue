@@ -1,30 +1,21 @@
 <template>
   <nav>
     <router-link to="/detail" class="item" active-class="selected">
-      <svg>
-        <use xlink:href="#detail"/>
-      </svg>
+      <Icon name="detail"></Icon>
       明细
     </router-link>
     <router-link to="/account" class="item" active-class="selected">
-      <svg>
-        <use xlink:href="#account"/>
-      </svg>
+      <Icon name="account"></Icon>
       记账
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <svg>
-        <use xlink:href="#statistics"/>
-      </svg>
+      <Icon name="statistics"></Icon>
       统计
     </router-link>
   </nav>
 </template>
 
 <script lang="ts">
-require("@/assets/icons/detail.svg");
-require("@/assets/icons/account.svg");
-require("@/assets/icons/statistics.svg");
 
 export default {
   name: "Nav"
