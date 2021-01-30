@@ -5,10 +5,13 @@
 </template>
 
 <script lang="ts">
-require("@/assets/icons/detail.svg");
-require("@/assets/icons/account.svg");
-require("@/assets/icons/statistics.svg");
-
+const importAll = (requireContext: __WebpackModuleApi.RequireContext) =>
+    requireContext.keys().forEach(requireContext);
+try {
+  importAll(require.context("../assets/icons", true, /\.svg$/));
+} catch (error) {
+  console.log(error);
+}
 export default {
   name: "Icon",
   props: ["name"]
