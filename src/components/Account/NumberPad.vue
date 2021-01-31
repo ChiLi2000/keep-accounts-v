@@ -37,14 +37,14 @@ export default {
     @extend %innerShadow;
     font-size: 36px;
     font-family: Consolas, monaspace, serif;
-    padding: 4px 14px;
+    padding: 8px 14px;
     text-align: right;
     height: 60px;
   }
 
   .pad {
     @extend %clearFix;
-    margin: 8px 14px;
+    margin: 4px 14px;
 
     button {
       width: 25%;

@@ -1,11 +1,13 @@
 <template>
-  <div class="wrapper">
+  <div class="outer">
     <Topbar/>
     <div class="tab_date">
       <Tab class-prefix="tab"/>
       <Date/>
     </div>
-    <TagsSection/>
+    <div class="center">
+      <TagsSection/>
+    </div>
     <Notes/>
     <NumberPad/>
   </div>
@@ -31,11 +33,16 @@ export default class Account extends Vue {
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
-
-.wrapper {
+.outer {
   background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  .center{
+    flex-grow: 1;
+    overflow: auto;
+  }
 }
-
 .tab_date {
   border-top: 1px solid #d3d3d3;
   padding: 12px 14px;
