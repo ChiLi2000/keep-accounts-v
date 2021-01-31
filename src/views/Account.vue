@@ -5,6 +5,7 @@
       <Tab class-prefix="tab"/>
       <Date/>
     </div>
+    <TagsSection/>
   </div>
 </template>
 
@@ -14,9 +15,10 @@ import {Vue, Component} from "vue-property-decorator";
 import Topbar from "@/components/Account/Topbar.vue";
 import Tab from "@/components/Account/Tab.vue";
 import Date from "@/components/Account/Date.vue";
+import TagsSection from "@/components/Account/TagsSection.vue";
 
 @Component({
-  components: {Topbar, Tab, Date}
+  components: {Topbar, Tab, Date, TagsSection}
 })
 export default class Account extends Vue {
 
