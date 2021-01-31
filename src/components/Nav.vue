@@ -46,10 +46,10 @@ nav {
     }
 
     &.selected {
-      color: #e1c748;
+      color: $color;
 
       svg {
-        fill: #e1c748;
+        fill: $color;
       }
     }
   }
