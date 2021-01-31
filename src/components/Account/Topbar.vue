@@ -11,7 +11,6 @@ import {Vue, Component} from "vue-property-decorator";
 
 @Component
 export default class Topbar extends Vue {
-  name: "Topbar";
 }
 </script>
 

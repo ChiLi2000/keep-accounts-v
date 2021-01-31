@@ -1,5 +1,5 @@
 <template>
-  <div class="outer">
+  <div>
     <el-date-picker
         v-model="value1"
         type="date"
@@ -17,11 +17,6 @@ export default class Date extends Vue {
 </script>
 
 <style scoped lang="scss">
-.outer {
-  display: flex;
-  justify-content: center;
-  margin: 12px 14px;
-}
 
 ::v-deep .el-date-editor.el-input {
   width: 80px;
