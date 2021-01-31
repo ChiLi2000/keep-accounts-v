@@ -1,15 +1,20 @@
 <template>
-  <Layout>account</Layout>
+  <div class="wrapper">
+    <Topbar/>
+  </div>
 </template>
 
 <script lang="ts">
-import Layout from "@/components/Layout.vue";
+import Topbar from "@/components/Account/Topbar.vue";
+
 export default {
   name: "Account",
-  components: {Layout}
+  components: {Topbar}
 };
 </script>
 
 <style scoped lang="scss">
-
+.wrapper {
+  background: white;
+}
 </style>
