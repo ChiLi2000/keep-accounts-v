@@ -1,7 +1,10 @@
 <template>
   <div class="wrapper">
     <Topbar/>
-    <Tab/>
+    <div class="tab_date">
+      <Tab/>
+      <Date/>
+    </div>
   </div>
 </template>
 
@@ -10,9 +13,10 @@
 import {Vue, Component} from "vue-property-decorator";
 import Topbar from "@/components/Account/Topbar.vue";
 import Tab from "@/components/Account/Tab.vue";
+import Date from "@/components/Account/Date.vue";
 
 @Component({
-  components: {Topbar, Tab}
+  components: {Topbar, Tab, Date}
 })
 export default class Account extends Vue {
 
@@ -23,4 +27,5 @@ export default class Account extends Vue {
 .wrapper {
   background: white;
 }
+
 </style>
