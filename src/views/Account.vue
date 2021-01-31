@@ -6,6 +6,7 @@
       <Date/>
     </div>
     <TagsSection/>
+    <Notes/>
   </div>
 </template>
 
@@ -16,9 +17,10 @@ import Topbar from "@/components/Account/Topbar.vue";
 import Tab from "@/components/Account/Tab.vue";
 import Date from "@/components/Account/Date.vue";
 import TagsSection from "@/components/Account/TagsSection.vue";
+import Notes from "@/components/Account/Notes.vue";
 
 @Component({
-  components: {Topbar, Tab, Date, TagsSection}
+  components: {Topbar, Tab, Date, TagsSection, Notes}
 })
 export default class Account extends Vue {
 
