@@ -31,6 +31,7 @@ nav {
   flex-direction: row;
   font-size: 12px;
   padding: 6px 0;
+  background: white;
 
   .item {
     display: flex;
