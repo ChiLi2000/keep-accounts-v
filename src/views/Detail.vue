@@ -1,15 +1,15 @@
 <template>
   <Layout slot-span>
-    <div>...</div>
+    <RecordsItem/>
   </Layout>
 </template>
 
 <script lang="ts">
 import {Vue, Component} from "vue-property-decorator";
 import Layout from "@/components/Layout.vue";
-
+import RecordsItem from "@/components/RecordsItem.vue";
 @Component({
-  components: {Layout}
+  components: {Layout,RecordsItem}
 })
 export default class Detail extends Vue {
 
