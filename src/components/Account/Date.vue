@@ -1,18 +1,20 @@
 <template>
-  <div>
+  <div :class="classPrefix && `${classPrefix}-wrapper`">
     <el-date-picker
         v-model="value1"
         type="date"
-        placeholder="01-31">
+        :placeholder="placeholder">
     </el-date-picker>
   </div>
 </template>
 
 <script lang="ts">
-import {Vue, Component} from "vue-property-decorator";
+import {Vue, Component,Prop} from "vue-property-decorator";
 
 @Component
 export default class Date extends Vue {
+  @Prop(String) classPrefix?: string
+  @Prop() placeholder?: string;
 }
 </script>
 

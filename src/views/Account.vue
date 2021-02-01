@@ -3,7 +3,7 @@
     <Topbar/>
     <div class="tab_date">
       <Tab class-prefix="tab"/>
-      <Date/>
+      <Date placeholder="02-01"/>
     </div>
     <div class="center">
       <TagsSection/>
