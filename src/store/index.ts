@@ -51,6 +51,37 @@ const store = new Vuex.Store({
       store.commit("saveTags");
     },
 
+    removeTag(state, id: number) {
+      let index = -1;
+      for (let i = 0; i < state.tagList.length; i++) {
+        if (state.tagList[i].id === id) {
+          index = i;
+          break;
+        }
+      }
+      state.tagList.splice(index, 1);
+      store.commit("saveTags");
+    },
+
+    updateTag(state, payload: { id: number; name: string }) {
+      const {id, name} = payload;
+      state.createTagError = null;
+      const idList = state.tagList.map((item => item.id));
+      if (idList.indexOf(id) >= 0) {
+        const names = state.tagList.map(item => item.name);
+        if (!name) {
+          state.createTagError = new Error("tag name null");
+          return;
+        } else if (names.indexOf(name) >= 0) {
+          state.createTagError = new Error("tag name duplicated");
+          return;
+        } else {
+          const tag = state.tagList.filter((item => item.id === id))[0];
+          tag.name = name;
+          store.commit("saveTags");
+        }
+      }
+    },
 
     saveTags(state) {
       window.localStorage.setItem("tagList", JSON.stringify(state.tagList));

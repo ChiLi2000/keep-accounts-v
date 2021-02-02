@@ -6,11 +6,24 @@
     >
       <Icon :name="`${tag.value}`"/>
       {{ tag.name }}
-
+    </li>
     <li @click="createTag">
       <Icon name="add"/>
       添加
     </li>
+    <el-dialog :append-to-body="true" title="请编辑类别名" :visible.sync="showDialog" :before-close="cancel">
+      <el-form>
+        <el-form-item>
+          <el-input v-model="middleName" @input="overLength"></el-input>
+          <p class="msg">{{ middleName.length }} / 4</p>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteTag">删除</el-button>
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="updateTag">确 定</el-button>
+      </div>
+    </el-dialog>
   </ul>
 </template>
 
@@ -25,6 +38,9 @@ const map: { [key: string]: string } = {
 @Component
 export default class TagsSection extends Vue {
   @Prop(Number) selectedTagId!: number;
+  showDialog = false;
+  middleName = "";
+  middleId = 24;
 
   created() {
     this.$store.commit("fetchTags");
@@ -36,6 +52,8 @@ export default class TagsSection extends Vue {
 
   toggle(id: number) {
     this.$emit("update:selectedTagId", id);
+    this.showDialog = true;
+
   }
 
   createTag() {
@@ -49,6 +67,37 @@ export default class TagsSection extends Vue {
       }
     }
   }
+
+  deleteTag() {
+    this.$store.commit("removeTag", this.middleId);
+    this.toggle(this.$store.state.tagList[0].id);
+    this.showDialog = false;
+  }
+
+  updateTag() {
+    this.$store.commit("updateTag", {
+      id: this.middleId,
+      name: this.middleName,
+    });
+
+    if (this.$store.state.createTagError) {
+      window.alert(
+          map[this.$store.state.createTagError.message] || "未知错误"
+      );
+    } else {
+      this.cancel();
+    }
+  }
+
+  cancel() {
+    this.showDialog = false;
+  }
+
+  overLength() {
+    this.middleName = this.middleName.substring(0, 4);
+    this.$emit("change", this.middleName);
+  }
+
 }
 </script>
 
@@ -83,5 +132,39 @@ export default class TagsSection extends Vue {
       }
     }
   }
+}
+
+::v-deep .el-dialog {
+  width: 80%;
+
+  .el-dialog__body {
+    padding: 15px 20px 0 20px;
+  }
+
+  .el-dialog__footer {
+    padding: 0 20px 20px 20px;
+
+    .dialog__footer {
+
+      display: flex;
+
+      .el-button {
+        justify-content: space-between;
+        padding: 10px 14px;
+      }
+    }
+  }
+
+}
+
+::v-deep .el-form-item__content {
+  margin-left: 10px !important;
+
+}
+
+.msg {
+  text-align: right;
+  font-size: 12px;
+  color: #999999;
 }
 </style>
