@@ -6,7 +6,7 @@
       <Date placeholder="02-01"/>
     </div>
     <div class="center">
-      <TagsSection/>
+      <TagsSection :selectedTagId.sync="tagId"/>
     </div>
     <Notes/>
     <NumberPad/>
@@ -27,7 +27,7 @@ import NumberPad from "@/components/Account/NumberPad.vue";
   components: {Topbar, Tab, Date, TagsSection, Notes, NumberPad}
 })
 export default class Account extends Vue {
-
+  tagId=1
 }
 </script>
 

@@ -1,6 +1,9 @@
 <template>
   <ul class="wrapper">
-    <li v-for="tag in tagList" :key="tag.id">
+    <li v-for="tag in tagList" :key="tag.id"
+        :class="{selected:tag.id ===selectedTagId }"
+        @click="toggle(tag.id)"
+    >
       <Icon :name="`${tag.value}`"/>
       {{ tag.name }}
 
@@ -12,22 +15,27 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component} from "vue-property-decorator";
+import {Vue, Component, Prop} from "vue-property-decorator";
 
 const map: { [key: string]: string } = {
   "tag name null": "类别名不能为空",
   "tag name duplicated": "类别名重复了",
   "tag name lengthOver": "类别名超长了"
-
 };
 @Component
 export default class TagsSection extends Vue {
+  @Prop(Number) selectedTagId!: number;
+
   created() {
     this.$store.commit("fetchTags");
   }
 
   get tagList() {
     return this.$store.state.tagList;
+  }
+
+  toggle(id: number) {
+    this.$emit("update:selectedTagId", id);
   }
 
   createTag() {
