@@ -14,34 +14,34 @@ const store = new Vuex.Store({
       state.tagList = JSON.parse(
         window.localStorage.getItem("tagList") || "[]"
       );
-      store.commit("createTag", {name: "餐饮 ", value: "餐饮"});
-      store.commit("createTag", {name: "购物", value: "购物"});
-      store.commit("createTag", {name: "服饰美容", value: "服饰美容"});
-      store.commit("createTag", {name: "交通 ", value: "交通"});
-      store.commit("createTag", {name: "住房缴费", value: "住房缴费"});
-      store.commit("createTag", {name: "生活服务", value: "生活服务"});
-      store.commit("createTag", {name: "学习", value: "学习"});
-      store.commit("createTag", {name: "娱乐 ", value: "娱乐"});
-      store.commit("createTag", {name: "运动", value: "运动"});
-      store.commit("createTag", {name: "旅游", value: "旅游"});
-      store.commit("createTag", {name: "酒店", value: "酒店"});
-      store.commit("createTag", {name: "医疗 ", value: "医疗"});
-      store.commit("createTag", {name: "宠物", value: "宠物"});
-      store.commit("createTag", {name: "人情", value: "人情"});
-      store.commit("createTag", {name: "红包", value: "红包"});
-      store.commit("createTag", {name: "转账", value: "转账"});
-      store.commit("createTag", {name: "其它", value: "其它"});
-      store.commit("createTag", {name: "退款", value: "退款"});
-      store.commit("createTag", {name: "工资 ", value: "工资"});
-      store.commit("createTag", {name: "转账", value: "转账"});
-      store.commit("createTag", {name: "人情", value: "人情"});
-      store.commit("createTag", {name: "其它", value: "其它"});
+      store.commit("createTag", {genre:"-",name: "餐饮 ", value: "餐饮"});
+      store.commit("createTag", {genre:"-",name: "购物", value: "购物"});
+      store.commit("createTag", {genre:"-",name: "服饰美容", value: "服饰美容"});
+      store.commit("createTag", {genre:"-",name: "交通 ", value: "交通"});
+      store.commit("createTag", {genre:"-",name: "住房缴费", value: "住房缴费"});
+      store.commit("createTag", {genre:"-",name: "生活服务", value: "生活服务"});
+      store.commit("createTag", {genre:"-",name: "学习", value: "学习"});
+      store.commit("createTag", {genre:"-",name: "娱乐 ", value: "娱乐"});
+      store.commit("createTag", {genre:"-",name: "运动", value: "运动"});
+      store.commit("createTag", {genre:"-",name: "旅游", value: "旅游"});
+      store.commit("createTag", {genre:"-",name: "酒店", value: "酒店"});
+      store.commit("createTag", {genre:"-",name: "医疗 ", value: "医疗"});
+      store.commit("createTag", {genre:"-",name: "宠物", value: "宠物"});
+      store.commit("createTag", {genre:"-",name: "人情", value: "人情"});
+      store.commit("createTag", {genre:"-",name: "红包", value: "红包"});
+      store.commit("createTag", {genre:"-",name: "转账", value: "转账"});
+      store.commit("createTag", {genre:"-",name: "其它", value: "其它"});
+      store.commit("createTag", {genre:"+",name: "退款", value: "退款"});
+      store.commit("createTag", {genre:"+",name: "工资 ", value: "工资"});
+      store.commit("createTag", {genre:"+",name: "转账", value: "转账"});
+      store.commit("createTag", {genre:"+",name: "人情", value: "人情"});
+      store.commit("createTag", {genre:"+",name: "其它", value: "其它"});
     },
 
-    createTag(state, payload: { name: string; value: string }) {
-      const {name, value} = payload;
+    createTag(state, payload: { genre: string;name: string; value: string }) {
+      const {genre,name, value} = payload;
       state.createTagError = null;
-      const names = state.tagList.map((item) => item.name);
+      const names = state.tagList.filter(t => t.genre === genre).map(t => t.name);
       if (!name) {
         state.createTagError = new Error("tag name null");
         return;
@@ -52,7 +52,7 @@ const store = new Vuex.Store({
         state.createTagError = new Error("tag name duplicated");
         return;
       }
-      state.tagList.push({id: createId(), genre: "-", name, value});
+      state.tagList.push({id: createId(), genre, name, value});
       store.commit("saveTags");
     },
 

@@ -6,7 +6,7 @@
       <DateSection placeholder="02-01"/>
     </div>
     <div class="center">
-      <TagsSection :selectedTagId.sync="tagId"/>
+      <TagsSection :selectedTagId.sync="tagId" :type.sync="record.category"/>
     </div>
     <Notes/>
     <NumberPad/>
@@ -37,7 +37,6 @@ export default class Account extends Vue {
     createdAt: dayjs(new Date().toISOString()).format("YYYY-MM-DD")
   };
 
-  tagId = 1;
 }
 </script>
 

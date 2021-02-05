@@ -3,7 +3,7 @@
     <li v-for="tag in tagList" :key="tag.id"
         :class="{selected:tag.id ===selectedTagId }"
         @click="toggle(tag.id)"
-        v-longpress="onItemTouchEnd(`${tag.id}`,`${tag.name}`)"
+        v-longpress="addLiFlag(tag.id) && onItemTouchEnd(`${tag.id}`,`${tag.name}`)"
     >
       <Icon :name="`${tag.value}`"/>
       {{ tag.name }}
@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop} from "vue-property-decorator";
+import {Vue, Component, Prop, Watch} from "vue-property-decorator";
 import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
@@ -42,6 +42,7 @@ const map: { [key: string]: string } = {
 })
 export default class TagsSection extends Vue {
   @Prop(Number) selectedTagId!: number;
+  @Prop(String) readonly type!: string;
   showDialog = false;
   middleName = "";
   middleId = "";
@@ -59,7 +60,7 @@ export default class TagsSection extends Vue {
   }
 
   get tagList(): Tag[] {
-    return this.$store.state.tagList;
+    return (this.$store.state.tagList.filter((t: Tag) => t.genre === this.type));
   }
 
   toggle(id: number) {
@@ -69,7 +70,7 @@ export default class TagsSection extends Vue {
   createTag() {
     const name = window.prompt("请输入类别名", "类别名4字以内且不重复");
     if (name !== null) {
-      this.$store.commit("createTag", {name: name, value: "其它"});
+      this.$store.commit("createTag", {genre: this.type, name: name, value: "其它"});
       if (this.$store.state.createTagError) {
         window.alert(
             map[this.$store.state.createTagError.message] || "未知错误"
@@ -80,8 +81,8 @@ export default class TagsSection extends Vue {
 
   deleteTag() {
     this.$store.commit("deleteTag", parseInt(this.middleId));
-    this.toggle(this.$store.state.tagList[0].id);
     this.cancel();
+    this.toggle(this.tagList[0].id);
   }
 
   updateTag() {
@@ -101,12 +102,24 @@ export default class TagsSection extends Vue {
 
   cancel() {
     this.showDialog = false;
-    this.toggle(parseInt(this.middleId));
   }
 
   overLength() {
     this.middleName = this.middleName.substring(0, 4);
     this.$emit("change", this.middleName);
+  }
+
+  @Watch("type")
+  onType() {
+    if (this.type === "-") {
+      this.toggle(1);
+    } else {
+      this.toggle(18);
+    }
+  }
+
+  addLiFlag(id: string) {
+    return parseInt(id) > 22;
   }
 
 }
