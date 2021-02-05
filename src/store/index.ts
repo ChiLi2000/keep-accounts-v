@@ -31,6 +31,11 @@ const store = new Vuex.Store({
       store.commit("createTag", {name: "红包", value: "红包"});
       store.commit("createTag", {name: "转账", value: "转账"});
       store.commit("createTag", {name: "其它", value: "其它"});
+      store.commit("createTag", {name: "退款", value: "退款"});
+      store.commit("createTag", {name: "工资 ", value: "工资"});
+      store.commit("createTag", {name: "转账", value: "转账"});
+      store.commit("createTag", {name: "人情", value: "人情"});
+      store.commit("createTag", {name: "其它", value: "其它"});
     },
 
     createTag(state, payload: { name: string; value: string }) {
@@ -51,7 +56,7 @@ const store = new Vuex.Store({
       store.commit("saveTags");
     },
 
-    removeTag(state, id: number) {
+    deleteTag(state, id: number) {
       let index = -1;
       for (let i = 0; i < state.tagList.length; i++) {
         if (state.tagList[i].id === id) {

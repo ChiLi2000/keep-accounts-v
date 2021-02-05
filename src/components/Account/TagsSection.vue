@@ -3,6 +3,7 @@
     <li v-for="tag in tagList" :key="tag.id"
         :class="{selected:tag.id ===selectedTagId }"
         @click="toggle(tag.id)"
+        v-longpress="onItemTouchEnd(`${tag.id}`,`${tag.name}`)"
     >
       <Icon :name="`${tag.value}`"/>
       {{ tag.name }}
@@ -29,31 +30,40 @@
 
 <script lang="ts">
 import {Vue, Component, Prop} from "vue-property-decorator";
+import longpress from "@/lib/longpress";
 
 const map: { [key: string]: string } = {
   "tag name null": "类别名不能为空",
   "tag name duplicated": "类别名重复了",
   "tag name lengthOver": "类别名超长了"
 };
-@Component
+@Component({
+  directives: {longpress}
+})
 export default class TagsSection extends Vue {
   @Prop(Number) selectedTagId!: number;
   showDialog = false;
   middleName = "";
-  middleId = 24;
+  middleId = "";
+
+  onItemTouchEnd(id: number, name: string) {
+    return () => {
+      this.middleId = id.toString();
+      this.middleName = name;
+      this.showDialog = true;
+    };
+  }
 
   created() {
     this.$store.commit("fetchTags");
   }
 
-  get tagList() {
+  get tagList(): Tag[] {
     return this.$store.state.tagList;
   }
 
   toggle(id: number) {
     this.$emit("update:selectedTagId", id);
-    this.showDialog = true;
-
   }
 
   createTag() {
@@ -69,14 +79,14 @@ export default class TagsSection extends Vue {
   }
 
   deleteTag() {
-    this.$store.commit("removeTag", this.middleId);
+    this.$store.commit("deleteTag", parseInt(this.middleId));
     this.toggle(this.$store.state.tagList[0].id);
-    this.showDialog = false;
+    this.cancel();
   }
 
   updateTag() {
     this.$store.commit("updateTag", {
-      id: this.middleId,
+      id: parseInt(this.middleId),
       name: this.middleName,
     });
 
@@ -91,6 +101,7 @@ export default class TagsSection extends Vue {
 
   cancel() {
     this.showDialog = false;
+    this.toggle(parseInt(this.middleId));
   }
 
   overLength() {
