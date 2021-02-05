@@ -1,7 +1,7 @@
 <template>
-  <div class="layout-wrapper">
-    <Date class-prefix="date" placeholder="2021-02"/>
-    <Tab class-prefix="tab" :slotSpan="slotSpan"/>
+  <div class="layout-wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
+    <DateSection class-prefix="date" placeholder="2021-02"/>
+    <Tab class-prefix="tab" :slotSpan="slotSpan" :value.sync="typeValue"/>
     <div class="content">
       <slot/>
     </div>
@@ -13,13 +13,15 @@
 import {Vue, Component, Prop} from "vue-property-decorator";
 import Nav from "@/components/Nav.vue";
 import Tab from "@/components/Account/Tab.vue";
-import Date from "@/components/Account/Date.vue";
+import DateSection from "@/components/Account/DateSection.vue";
 
 @Component({
-  components: {Nav, Date, Tab}
+  components: {Nav, DateSection, Tab}
 })
 export default class Layout extends Vue {
   @Prop(Boolean) slotSpan!: boolean;
+  @Prop(String) classPrefix?: string;
+  typeValue = "-" as Category;
 }
 </script>
 
@@ -56,9 +58,6 @@ export default class Layout extends Vue {
     display: flex;
     flex-direction: column;
 
-    &.selected {
-      border-bottom: 2px solid gray;
-    }
 
     span {
       padding: 16px 0 0;

@@ -2,8 +2,8 @@
   <div class="outer">
     <Topbar/>
     <div class="tab_date">
-      <Tab class-prefix="tab"/>
-      <Date placeholder="02-01"/>
+      <Tab class-prefix="tab" :value.sync="record.category"/>
+      <DateSection placeholder="02-01"/>
     </div>
     <div class="center">
       <TagsSection :selectedTagId.sync="tagId"/>
@@ -18,31 +18,44 @@
 import {Vue, Component} from "vue-property-decorator";
 import Topbar from "@/components/Account/Topbar.vue";
 import Tab from "@/components/Account/Tab.vue";
-import Date from "@/components/Account/Date.vue";
+import DateSection from "@/components/Account/DateSection.vue";
 import TagsSection from "@/components/Account/TagsSection.vue";
 import Notes from "@/components/Account/Notes.vue";
 import NumberPad from "@/components/Account/NumberPad.vue";
+import dayjs from "dayjs";
+
 
 @Component({
-  components: {Topbar, Tab, Date, TagsSection, Notes, NumberPad}
+  components: {Topbar, Tab, DateSection, TagsSection, Notes, NumberPad}
 })
 export default class Account extends Vue {
-  tagId=1
+  record: newRecordItem = {
+    category: "-" as Category,
+    tagId: 1,
+    note: "",
+    amount: 0,
+    createdAt: dayjs(new Date().toISOString()).format("YYYY-MM-DD")
+  };
+
+  tagId = 1;
 }
 </script>
 
 <style scoped lang="scss">
 @import "~@/assets/style/helper.scss";
+
 .outer {
   background: white;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  .center{
+
+  .center {
     flex-grow: 1;
     overflow: auto;
   }
 }
+
 .tab_date {
   border-top: 1px solid #d3d3d3;
   padding: 12px 14px;

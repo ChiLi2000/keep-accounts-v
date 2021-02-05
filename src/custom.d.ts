@@ -10,3 +10,15 @@ type RootState = {
   createTagError: Error | null;
 }
 
+type Category = "-" | "+"
+
+type RecordItem = {
+  idR: number;
+  category: Category;
+  tagId: number;
+  note: string;
+  amount: number;
+  createdAt: string;
+}
+
+type newRecordItem = Omit<RecordItem, "idR">
