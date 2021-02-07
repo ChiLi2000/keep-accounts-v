@@ -1,9 +1,14 @@
-let id: number = parseInt(window.localStorage.getItem("_idTagMax") || "0") || 0;
-
-function createId() {
-  id++;
-  window.localStorage.setItem("_idTagMax", JSON.stringify(id));
+let id = parseInt(window.localStorage.getItem("idMax") || "0");
+let idR = parseInt(window.localStorage.getItem("idMaxR") || "0");
+const createId = (): number => {
+  id += 1;
+  window.localStorage.setItem("idMax", JSON.stringify(id));
   return id;
-}
+};
+const createIdR = (): number => {
+  idR += 1;
+  window.localStorage.setItem("idMaxR", JSON.stringify(idR));
+  return idR;
+};
 
-export default createId;
+export {createId, createIdR};

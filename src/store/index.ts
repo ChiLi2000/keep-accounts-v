@@ -1,13 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import createId from "@/lib/createId";
+import {createId, createIdR} from "@/lib/createId";
+import clone from "@/lib/clone";
+
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
     tagList: [],
-    createTagError: null
+    createTagError: null,
+    recordList: [],
+    createRecordError: null
   } as RootState,
   mutations: {
     fetchTags(state) {
@@ -90,8 +94,23 @@ const store = new Vuex.Store({
 
     saveTags(state) {
       window.localStorage.setItem("tagList", JSON.stringify(state.tagList));
-    }
+    },
 
+    fetchRecord(state){
+      state.recordList = JSON.parse(window.localStorage.getItem("recordList") || "[]") as RecordItem[];
+    },
+
+    saveRecord(state) {
+      window.localStorage.setItem("recordList", JSON.stringify(state.recordList));
+    },
+
+    createRecord(state, newRecord: newRecordItem) {
+      const record = {...newRecord, idR: createIdR()};
+      const cloneRecord = clone(record);
+      state.recordList.push(cloneRecord);
+      store.commit("saveRecord");
+
+    },
 
   },
 });

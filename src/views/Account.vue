@@ -1,14 +1,5 @@
 <template>
   <div class="outer">
-    {{ record.category }}
-    <hr/>
-    {{ record.createdAt }}
-    <hr/>
-    {{ record.tagId }}
-    <hr/>
-    {{ record.note }}
-    <hr/>
-    {{ record.amount }}
     <Topbar/>
     <div class="tab_date">
       <Tab class-prefix="tab" :value.sync="record.category"/>
@@ -48,7 +39,14 @@ export default class Account extends Vue {
   placeholder = dayjs(new Date().toISOString()).format("MM-DD");
 
   saveRecord() {
-    console.log("1");
+    if (this.record.amount === 0) {
+      alert("请输入具体金额");
+    } else {
+      this.$store.commit("createRecord", this.record);
+      if (this.$store.state.createRecordError === null) {
+        window.alert("已记一笔");
+      }
+    }
   }
 }
 </script>

@@ -8,6 +8,8 @@ type Tag = {
 type RootState = {
   tagList: Tag[];
   createTagError: Error | null;
+  recordList: RecordItem[];
+  createRecordError: Error | null;
 }
 
 type Category = "-" | "+"
