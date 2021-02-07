@@ -45,6 +45,7 @@ export default class Account extends Vue {
       this.$store.commit("createRecord", this.record);
       if (this.$store.state.createRecordError === null) {
         window.alert("已记一笔");
+        this.$router.push({path: "/"});
       }
     }
   }
