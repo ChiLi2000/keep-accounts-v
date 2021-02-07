@@ -1,20 +1,35 @@
 <template>
   <div :class="classPrefix && `${classPrefix}-wrapper`">
     <el-date-picker
-        v-model="value1"
-        type="date"
-        :placeholder="placeholder">
+        v-model="value"
+        :type="type"
+        :placeholder="placeholder"
+        :format="format"
+        :editable="false"
+        >
     </el-date-picker>
   </div>
 </template>
 
 <script lang="ts">
-import {Vue, Component,Prop} from "vue-property-decorator";
+import {Vue, Component, Prop, Watch} from "vue-property-decorator";
+import dayjs from "dayjs";
 
 @Component
-export default class Date extends Vue {
-  @Prop(String) classPrefix?: string
+export default class DateSection extends Vue {
+  @Prop(String) classPrefix?: string;
+  @Prop() value!: string;
+  @Prop() type!: string;
   @Prop() placeholder?: string;
+  @Prop() format!: string;
+
+  @Watch("value")
+  onValue() {
+    const exactTime = dayjs(new Date().toISOString()).format(" HH:mm:ss")
+    this.$emit("update:value", dayjs(this.value).format("YYYY-MM-DD").concat(exactTime));
+  }
+
+
 }
 </script>
 

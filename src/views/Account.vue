@@ -1,15 +1,24 @@
 <template>
   <div class="outer">
+    {{ record.category }}
+    <hr/>
+    {{ record.createdAt }}
+    <hr/>
+    {{ record.tagId }}
+    <hr/>
+    {{ record.note }}
+    <hr/>
+    {{ record.amount }}
     <Topbar/>
     <div class="tab_date">
       <Tab class-prefix="tab" :value.sync="record.category"/>
-      <DateSection placeholder="02-01"/>
+      <DateSection :value.sync="record.createdAt" :placeholder="placeholder" type="date" format="MM-dd"/>
     </div>
     <div class="center">
-      <TagsSection :selectedTagId.sync="tagId" :type.sync="record.category"/>
+      <TagsSection :selectedTagId.sync="record.tagId" :type.sync="record.category"/>
     </div>
-    <Notes/>
-    <NumberPad/>
+    <Notes :value.sync="record.note"/>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
   </div>
 </template>
 
@@ -34,9 +43,13 @@ export default class Account extends Vue {
     tagId: 1,
     note: "",
     amount: 0,
-    createdAt: dayjs(new Date().toISOString()).format("YYYY-MM-DD")
+    createdAt: dayjs(new Date().toISOString()).format("YYYY-MM-DD HH:mm:ss")
   };
+  placeholder = dayjs(new Date().toISOString()).format("MM-DD");
 
+  saveRecord() {
+    console.log("1");
+  }
 }
 </script>
 

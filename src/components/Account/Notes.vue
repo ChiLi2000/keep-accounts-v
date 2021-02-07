@@ -4,16 +4,27 @@
       <input
           type="text"
           placeholder="请输入备注"
+          v-model="value"
+          @input="overLength"
       />
-      <span class="msg">2 / 10</span>
+      <span class="msg">{{ value.length }} / 10</span>
     </label>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "Notes"
-};
+import {Vue, Component, Prop} from "vue-property-decorator";
+
+@Component
+export default class Notes extends Vue {
+  @Prop() value!: string;
+
+  overLength() {
+    this.value = this.value.substring(0, 10);
+    this.$emit("update:value", this.value);
+  }
+
+}
 </script>
 
 <style scoped lang="scss">
