@@ -1,52 +1,18 @@
 <template>
   <div>
     <ul>
-      <li>
+      <li v-for="[date, list] in groupedList" :key="date">
         <h3>
-        <span>02月01日</span>
-        <span class="right">支出：100 收入： 200 </span>
+          <span>{{date}}</span>
+          <span class="right">支出：{{ numberFilter(totalDate(list, '-')) }} 收入： {{numberFilter(totalDate(list, '+'))}}</span>
         </h3>
         <ol>
-          <li class="item"><Icon name="餐饮"/>
-          <p class="topItem">餐饮 <span>-22.00</span></p>
-          <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
-          <li class="item"><Icon name="红包"/>
-            <p class="topItem">红包 <span>100.00</span></p>
-            <p class="bottomItem">一点点 <span>21:36:58</span></p></li>
-        </ol>
-      </li>
-      <li>
-        <h3>
-          <span>02月01日</span>
-          <span class="right">支出：100 收入： 200 </span>
-        </h3>
-        <ol>
-          <li class="item"><Icon name="餐饮"/>
-            <p class="topItem">餐饮 <span>-22.00</span></p>
-            <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
-          <li class="item"><Icon name="餐饮"/>
-            <p class="topItem">餐饮 <span>-22.00</span></p>
-            <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
-          <li class="item"><Icon name="餐饮"/>
-            <p class="topItem">餐饮 <span>-22.00</span></p>
-            <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
-        </ol>
-      </li>
-      <li>
-        <h3>
-          <span>02月01日</span>
-          <span class="right">支出：100 收入： 200 </span>
-        </h3>
-        <ol>
-          <li class="item"><Icon name="餐饮"/>
-            <p class="topItem">餐饮 <span>-22.00</span></p>
-            <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
-          <li class="item"><Icon name="餐饮"/>
-            <p class="topItem">餐饮 <span>-22.00</span></p>
-            <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
-          <li class="item"><Icon name="餐饮"/>
-            <p class="topItem">餐饮 <span>-22.00</span></p>
-            <p class="bottomItem">早餐 <span>21:36:58</span></p></li>
+          <li class="item" v-for="record in newRecords(list)"
+              :key="record.idR">
+            <Icon name="餐饮"/>
+            <p class="topItem">{{ record.tagId }} <span>{{ record.category + numberFilter(record.amount) }}</span></p>
+            <p class="bottomItem">{{ record.note }} <span>{{ record.createdAt }}</span></p></li>
+
         </ol>
       </li>
     </ul>
@@ -54,53 +20,93 @@
 </template>
 
 <script lang="ts">
-export default {
-name: "RecordsItem"
+import { Component, Prop} from "vue-property-decorator";
+import {mixins} from "vue-class-component";
+import dayjs from "dayjs";
+import Common from "@/mixins/common";
+import clone from "@/lib/clone";
+type HashType = {
+  [key: string]: RecordItem[];
+}
+@Component
+export default class RecordsItem extends mixins(Common) {
+  @Prop() records!: RecordItem[];
+  @Prop() formatArray!: string;
+  @Prop() mouthRecords!: ((array: HashArray) => HashArray);
+  @Prop() newRecords!: ((records: RecordItem[]) => RecordItem[]);
+
+  get groupedList(){
+    const hash: HashType = {};
+    const {records}=this
+    const newList = clone(records)
+    newList.forEach(r => {
+      const key = dayjs(r.createdAt).format(this.formatArray);
+      if (!(key in hash)) {
+        hash[key] = [];
+      }
+      hash[key].push(r);
+    });
+    const array: HashType = Object.entries(hash).sort((a, b) => {
+      if (a[0] === b[0]) return 0;
+      if (a[0] > b[0]) return -1;
+      if (a[0] < b[0]) return 1;
+      return 0;
+    });
+    return array
+  }
+
 }
 </script>
 
 <style scoped lang="scss">
-h3{
-  margin:0;
+h3 {
+  margin: 0;
   display: flex;
   justify-content: space-between;
   align-content: center;
   text-align: center;
   line-height: 24px;
   padding: 12px 14px;
-  .right{
+
+  .right {
     font-size: 14px;
   }
 }
-.item{
+
+.item {
   background: white;
 
-    display: grid;
-    grid: auto auto / 38px 1fr;
-    padding:8px 14px;
-    .icon{
-      width: 38px;
-      height: 38px;
-      grid-column: 1;
-      grid-row: 1 / span 2;
-      margin-top: 2px;
-    }
-    p{
-      margin:0;
-      padding: 2px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  display: grid;
+  grid: auto auto / 38px 1fr;
+  padding: 8px 14px;
+
+  .icon {
+    width: 38px;
+    height: 38px;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin-top: 2px;
   }
-.topItem{
-  grid-column: 2;
-  grid-row: 1;
-  >span{
-    font-size:18px;
+
+  p {
+    margin: 0;
+    padding: 2px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
-.bottomItem{
+
+.topItem {
+  grid-column: 2;
+  grid-row: 1;
+
+  > span {
+    font-size: 18px;
+  }
+}
+
+.bottomItem {
   grid-column: 2;
   grid-row: 2;
   font-size: 12px;

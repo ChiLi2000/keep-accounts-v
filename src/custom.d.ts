@@ -24,3 +24,5 @@ type RecordItem = {
 }
 
 type newRecordItem = Omit<RecordItem, "idR">
+
+type HashArray = [string, RecordItem[]][]
