@@ -3,16 +3,18 @@
     <ul>
       <li v-for="[date, list] in groupedList" :key="date">
         <h3>
-          <span>{{date}}</span>
-          <span class="right">支出：{{ numberFilter(totalDate(list, '-')) }} 收入： {{numberFilter(totalDate(list, '+'))}}</span>
+          <span>{{ date }}</span>
+          <span class="right">支出：{{
+              numberFilter(totalDate(list, '-'))
+            }} 收入： {{ numberFilter(totalDate(list, '+')) }}</span>
         </h3>
         <ol>
           <li class="item" v-for="record in newRecords(list)"
               :key="record.idR">
-            <Icon name="餐饮"/>
-            <p class="topItem">{{ record.tagId }} <span>{{ record.category + numberFilter(record.amount) }}</span></p>
+            <Icon :name="`${getValue(record.tagId,true)}`"/>
+            <p class="topItem">{{ getValue(record.tagId, false) }}
+              <span>{{ record.category + numberFilter(record.amount) }}</span></p>
             <p class="bottomItem">{{ record.note }} <span>{{ record.createdAt }}</span></p></li>
-
         </ol>
       </li>
     </ul>
@@ -20,11 +22,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
 import {mixins} from "vue-class-component";
 import dayjs from "dayjs";
 import Common from "@/mixins/common";
 import clone from "@/lib/clone";
+
 type HashType = {
   [key: string]: RecordItem[];
 }
@@ -32,13 +35,14 @@ type HashType = {
 export default class RecordsItem extends mixins(Common) {
   @Prop() records!: RecordItem[];
   @Prop() formatArray!: string;
-  @Prop() mouthRecords!: ((array: HashArray) => HashArray);
+  @Prop() createTime!: string;
+  @Prop() mouthRecords!: ((array: HashArray, createTime: string) => HashArray);
   @Prop() newRecords!: ((records: RecordItem[]) => RecordItem[]);
 
-  get groupedList(){
+  get groupedList() {
     const hash: HashType = {};
-    const {records}=this
-    const newList = clone(records)
+    const {records} = this;
+    const newList = clone(records);
     newList.forEach(r => {
       const key = dayjs(r.createdAt).format(this.formatArray);
       if (!(key in hash)) {
@@ -46,13 +50,26 @@ export default class RecordsItem extends mixins(Common) {
       }
       hash[key].push(r);
     });
-    const array: HashType = Object.entries(hash).sort((a, b) => {
+    const array = Object.entries(hash).sort((a, b) => {
       if (a[0] === b[0]) return 0;
       if (a[0] > b[0]) return -1;
       if (a[0] < b[0]) return 1;
       return 0;
     });
-    return array
+    return this.mouthRecords(array, this.createTime);
+  }
+
+  created() {
+    this.$store.commit("fetchTags");
+  }
+
+  get tagList(): Tag[] {
+    return this.$store.state.tagList;
+  }
+
+  getValue(id: number, x: boolean) {
+    const tag = this.tagList.filter(t => t.id === id)[0];
+    return x ? tag.value : tag.name;
   }
 
 }

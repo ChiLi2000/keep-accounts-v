@@ -25,11 +25,13 @@ export default class DateSection extends Vue {
 
   @Watch("value")
   onValue() {
-    const exactTime = dayjs(new Date().toISOString()).format(" HH:mm:ss")
-    this.$emit("update:value", dayjs(this.value).format("YYYY-MM-DD").concat(exactTime));
+    if(this.type==='date'){
+      const exactTime = dayjs(new Date().toISOString()).format(" HH:mm:ss")
+      this.$emit("update:value", dayjs(this.value).format("YYYY-MM-DD").concat(exactTime));
+    }else{
+      this.$emit("update:value", dayjs(this.value).format("YYYY-MM"));
+    }
   }
-
-
 }
 </script>
 

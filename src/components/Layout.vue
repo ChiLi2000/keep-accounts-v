@@ -1,6 +1,7 @@
 <template>
   <div class="layout-wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
-    <DateSection class-prefix="date" placeholder="2021-02"/>
+    <DateSection class-prefix="date"
+                 :value.sync="valueTime" :placeholder="valueTime" type="month" format="yyyy-MM"/>
     <Tab class-prefix="tab" :slotSpan="slotSpan" :value.sync="typeValue"/>
     <div class="content">
       <slot/>
@@ -10,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop} from "vue-property-decorator";
+import {Vue, Component, Prop, Watch} from "vue-property-decorator";
 import Nav from "@/components/Nav.vue";
 import Tab from "@/components/Account/Tab.vue";
 import DateSection from "@/components/Account/DateSection.vue";
@@ -21,8 +22,14 @@ import DateSection from "@/components/Account/DateSection.vue";
 export default class Layout extends Vue {
   @Prop(Boolean) slotSpan!: boolean;
   @Prop(String) classPrefix?: string;
+  @Prop() valueTime!: string;
   typeValue = "-" as Category;
+  @Watch("valueTime")
+  onValue() {
+      this.$emit("update:valueTime", this.valueTime);
+  }
 }
+
 </script>
 
 <style scoped lang="scss">

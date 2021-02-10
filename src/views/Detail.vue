@@ -1,8 +1,10 @@
 <template>
-  <Layout slot-span >
+  <Layout slot-span :valueTime.sync="createTime">
     <RecordsItem :records="recordList"
                  formatArray="MM月DD日"
+                 :mouthRecords="mouthRecords"
                  :newRecords="newRecords"
+                 v-bind:createTime="createTime"
 
     />
   </Layout>
@@ -15,9 +17,11 @@ import RecordsItem from "@/components/RecordsItem.vue";
 import dayjs from "dayjs";
 
 @Component({
-  components: {Layout,RecordsItem}
+  components: {Layout, RecordsItem}
 })
 export default class Detail extends Vue {
+  createTime = dayjs(new Date().toISOString()).format("YYYY-MM");
+
   created() {
     this.$store.commit("fetchRecord");
   }
@@ -25,19 +29,14 @@ export default class Detail extends Vue {
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
-  //
-  newRecords(records: RecordItem[]){
+
+  newRecords(records: RecordItem[]) {
     return (records.sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()));
   }
 
-  // mouthRecords (array: HashArray) {
-  //   return array.filter(r => createTime.slice(5) === r[0].slice(0, 2));
-  // };
-  // mouthTotal (e:Event,type: Category){
-  //   return totalDate(this.recordList.filter(r => (r.createdAt).indexOf(createTime) !== -1), type);
-  // };
-
-
+  mouthRecords(array: HashArray, createTime: string) {
+    return array.filter(r => r && createTime === r[1][0].createdAt.slice(0, 7));
+  }
 }
 </script>
 
