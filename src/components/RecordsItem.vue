@@ -2,19 +2,25 @@
   <div>
     <ul v-if="groupedList[0]!==undefined">
       <li v-for="[date, list] in groupedList" :key="date">
-        <h3>
-          <span>{{ date }}</span>
-          <span class="right">支出：{{
+        <h3 v-if="newRecords(list)[0]!==undefined">
+          <span v-if="type===undefined">{{ date }}</span>
+          <span v-else>{{ date.slice(5) }}
+            <span v-if="type==='-'">支出排行榜</span>
+          <span v-else>收入排行榜</span></span>
+          <span class="right" v-if="type===undefined">支出：{{
               numberFilter(totalDate(list, '-'))
             }} 收入： {{ numberFilter(totalDate(list, '+')) }}</span>
         </h3>
+        <div v-else class="noResult">当月没有任何记录哦</div>
         <ol>
           <li class="item" v-for="record in newRecords(list)"
               :key="record.idR">
             <Icon :name="`${getValue(record.tagId,true)}`"/>
             <p class="topItem">{{ getValue(record.tagId, false) }}
               <span>{{ record.category + numberFilter(record.amount) }}</span></p>
-            <p class="bottomItem">{{ record.note }} <span>{{ record.createdAt.slice(11) }}</span></p></li>
+            <p class="bottomItem">{{ record.note }}
+              <span v-if="type===undefined">{{ record.createdAt.slice(11) }}</span>
+              <span v-else>{{ record.createdAt.slice(5) }}</span></p></li>
         </ol>
       </li>
     </ul>
@@ -37,6 +43,7 @@ export default class RecordsItem extends mixins(Common) {
   @Prop() records!: RecordItem[];
   @Prop() formatArray!: string;
   @Prop() createTime!: string;
+  @Prop() type?: string;
   @Prop() mouthRecords!: ((array: HashArray, createTime: string) => HashArray);
   @Prop() newRecords!: ((records: RecordItem[]) => RecordItem[]);
 

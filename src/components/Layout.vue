@@ -6,7 +6,7 @@
                  type="month" format="yyyy-MM"/>
     <Tab class-prefix="tab"
          :slotSpan="slotSpan"
-         :value.sync="typeValue"
+         :value.sync="valueType"
          :mouthTotal="mouthTotal"/>
     <div class="content">
       <slot/>
@@ -28,14 +28,17 @@ export default class Layout extends Vue {
   @Prop(Boolean) slotSpan!: boolean;
   @Prop(String) classPrefix?: string;
   @Prop() mouthTotal!: ((type: Category) => number);
-
   @Prop() valueTime!: string;
-  typeValue = "-" as Category;
+  @Prop() valueType!: string
 
 
   @Watch("valueTime")
   onValue() {
     this.$emit("update:valueTime", this.valueTime);
+  }
+  @Watch("valueType")
+  onValueType() {
+    this.$emit("update:valueType", this.valueType);
   }
 }
 
@@ -77,7 +80,7 @@ export default class Layout extends Vue {
 
 
     span {
-      padding: 16px 0 0;
+      padding: 14px 0 0;
       font-size: 28px;
       font-weight: 600;
     }
