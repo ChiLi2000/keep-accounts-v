@@ -6,7 +6,7 @@
           @click="select(item)"
           :class="{selected:item.value ===value}"
       >{{ item.text }}
-        <span v-if="slotSpan">￥100</span>
+        <span v-if="slotSpan">￥{{ numberFilter(mouthTotal(item.value)) }}</span>
       </li>
     </ul>
   </div>
@@ -14,16 +14,20 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component, Prop} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
 import typeList from "@/constants/typeList";
+import {mixins} from "vue-class-component";
+import Common from "@/mixins/common";
 
 type DataSourceItem = { text: string; value: string };
 
 @Component
-export default class Tab extends Vue {
+export default class Tab extends mixins(Common) {
   @Prop(String) readonly value!: string;
   @Prop(String) classPrefix?: string;
   @Prop(Boolean) slotSpan!: boolean;
+  @Prop() mouthTotal!: ((type: Category) => number);
+
   typeList = typeList;
 
   liClass(item: DataSourceItem) {

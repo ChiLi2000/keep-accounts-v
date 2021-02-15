@@ -1,8 +1,13 @@
 <template>
   <div class="layout-wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
     <DateSection class-prefix="date"
-                 :value.sync="valueTime" :placeholder="valueTime" type="month" format="yyyy-MM"/>
-    <Tab class-prefix="tab" :slotSpan="slotSpan" :value.sync="typeValue"/>
+                 :value.sync="valueTime"
+                 :placeholder="valueTime"
+                 type="month" format="yyyy-MM"/>
+    <Tab class-prefix="tab"
+         :slotSpan="slotSpan"
+         :value.sync="typeValue"
+         :mouthTotal="mouthTotal"/>
     <div class="content">
       <slot/>
     </div>
@@ -22,13 +27,18 @@ import DateSection from "@/components/Account/DateSection.vue";
 export default class Layout extends Vue {
   @Prop(Boolean) slotSpan!: boolean;
   @Prop(String) classPrefix?: string;
+  @Prop() mouthTotal!: ((type: Category) => number);
+
   @Prop() valueTime!: string;
   typeValue = "-" as Category;
+
+
   @Watch("valueTime")
   onValue() {
-      this.$emit("update:valueTime", this.valueTime);
+    this.$emit("update:valueTime", this.valueTime);
   }
 }
+
 
 </script>
 

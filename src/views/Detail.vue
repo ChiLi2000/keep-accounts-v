@@ -1,5 +1,7 @@
 <template>
-  <Layout slot-span :valueTime.sync="createTime">
+  <Layout slot-span
+          :valueTime.sync="createTime"
+          :mouthTotal="mouthTotal">
     <RecordsItem :records="recordList"
                  formatArray="MM月DD日"
                  :mouthRecords="mouthRecords"
@@ -11,15 +13,17 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component} from "vue-property-decorator";
+import {Component} from "vue-property-decorator";
 import Layout from "@/components/Layout.vue";
 import RecordsItem from "@/components/RecordsItem.vue";
 import dayjs from "dayjs";
+import {mixins} from "vue-class-component";
+import Common from "@/mixins/common";
 
 @Component({
   components: {Layout, RecordsItem}
 })
-export default class Detail extends Vue {
+export default class Detail extends mixins(Common) {
   createTime = dayjs(new Date().toISOString()).format("YYYY-MM");
 
   created() {
@@ -37,6 +41,11 @@ export default class Detail extends Vue {
   mouthRecords(array: HashArray, createTime: string) {
     return array.filter(r => r && createTime === r[1][0].createdAt.slice(0, 7));
   }
+
+  mouthTotal(type: Category) {
+    return this.totalDate(this.recordList.filter(r => (r.createdAt).indexOf(this.createTime) !== -1), type);
+  }
+
 }
 </script>
 

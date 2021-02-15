@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul>
+    <ul v-if="groupedList[0]!==undefined">
       <li v-for="[date, list] in groupedList" :key="date">
         <h3>
           <span>{{ date }}</span>
@@ -14,10 +14,11 @@
             <Icon :name="`${getValue(record.tagId,true)}`"/>
             <p class="topItem">{{ getValue(record.tagId, false) }}
               <span>{{ record.category + numberFilter(record.amount) }}</span></p>
-            <p class="bottomItem">{{ record.note }} <span>{{ record.createdAt }}</span></p></li>
+            <p class="bottomItem">{{ record.note }} <span>{{ record.createdAt.slice(11) }}</span></p></li>
         </ol>
       </li>
     </ul>
+    <div v-else class="noResult">当月没有任何记录哦</div>
   </div>
 </template>
 
@@ -131,4 +132,8 @@ h3 {
   font-weight: normal;
 }
 
+.noResult {
+  padding: 16px;
+  text-align: center;
+}
 </style>
