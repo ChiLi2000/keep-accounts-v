@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ul v-if="groupedList[0]!==undefined">
-      <li v-for="[date, list] in groupedList" :key="date">
+    <div v-if="groupedList[0]!==undefined">
+      <div v-for="[date, list] in groupedList" :key="date">
         <h3 v-if="newRecords(list)[0]!==undefined">
           <span v-if="type===undefined">{{ date }}</span>
           <span v-else>{{ date.slice(5) }}
@@ -12,18 +12,19 @@
             }} 收入： {{ numberFilter(totalDate(list, '+')) }}</span>
         </h3>
         <div v-else class="noResult">当月没有任何记录哦</div>
-        <ol>
-          <li class="item" v-for="record in newRecords(list)"
-              :key="record.idR">
+        <div class="item">
+          <router-link v-for="record in newRecords(list)"
+                       :key="record.idR"
+                       :to="`/record/${record.idR}`">
             <Icon :name="`${getValue(record.tagId,true)}`"/>
             <p class="topItem">{{ getValue(record.tagId, false) }}
               <span>{{ record.category + numberFilter(record.amount) }}</span></p>
             <p class="bottomItem">{{ record.note }}
               <span v-if="type===undefined">{{ record.createdAt.slice(11) }}</span>
-              <span v-else>{{ record.createdAt.slice(5) }}</span></p></li>
-        </ol>
-      </li>
-    </ul>
+              <span v-else>{{ formatTime(record.createdAt).slice(5) }}</span></p></router-link>
+        </div>
+      </div>
+    </div>
     <div v-else class="noResult">当月没有任何记录哦</div>
   </div>
 </template>
@@ -101,24 +102,26 @@ h3 {
 .item {
   background: white;
 
-  display: grid;
-  grid: auto auto / 38px 1fr;
-  padding: 8px 14px;
+  > a {
+    display: grid;
+    grid: auto auto / 38px 1fr;
+    padding: 8px 14px;
 
-  .icon {
-    width: 38px;
-    height: 38px;
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    margin-top: 2px;
-  }
+    .icon {
+      width: 38px;
+      height: 38px;
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      margin-top: 2px;
+    }
 
-  p {
-    margin: 0;
-    padding: 2px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    p {
+      margin: 0;
+      padding: 2px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
 

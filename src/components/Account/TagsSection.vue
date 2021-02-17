@@ -20,17 +20,21 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="deleteTag">删除</el-button>
+        <el-button @click="dialogVisible = true">删除</el-button>
         <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="updateTag">确 定</el-button>
       </div>
     </el-dialog>
+    <DeleteCue :dialogVisible.sync="dialogVisible" @submit="deleteTag">
+      <span>删除后，该分类下的记录也将被删除</span>
+    </DeleteCue>
   </ul>
 </template>
 
 <script lang="ts">
 import {Vue, Component, Prop, Watch} from "vue-property-decorator";
 import longpress from "@/lib/longpress";
+import DeleteCue from "@/components/DeleteCue.vue";
 
 const map: { [key: string]: string } = {
   "tag name null": "类别名不能为空",
@@ -38,7 +42,8 @@ const map: { [key: string]: string } = {
   "tag name lengthOver": "类别名超长了"
 };
 @Component({
-  directives: {longpress}
+  directives: {longpress},
+  components: {DeleteCue}
 })
 export default class TagsSection extends Vue {
   @Prop(Number) selectedTagId!: number;
@@ -46,6 +51,7 @@ export default class TagsSection extends Vue {
   showDialog = false;
   middleName = "";
   middleId = "";
+  dialogVisible=false
 
   onItemTouchEnd(id: number, name: string) {
     return () => {
@@ -57,6 +63,7 @@ export default class TagsSection extends Vue {
 
   created() {
     this.$store.commit("fetchTags");
+    this.$store.commit("fetchRecord");
   }
 
   get tagList(): Tag[] {
@@ -81,8 +88,16 @@ export default class TagsSection extends Vue {
 
   deleteTag() {
     this.$store.commit("deleteTag", parseInt(this.middleId));
+    this.$store.commit("defaultRecord", parseInt(this.middleId));
+    this.dialogVisible=false
     this.cancel();
     this.toggle(this.tagList[0].id);
+    this.$message({
+      message: "已删除",
+      type: "success",
+      duration:1000,
+      center:true,
+    });
   }
 
   updateTag() {
@@ -162,7 +177,7 @@ export default class TagsSection extends Vue {
   width: 80%;
 
   .el-dialog__body {
-    padding: 15px 20px 0 20px;
+    padding:  20px ;
   }
 
   .el-dialog__footer {

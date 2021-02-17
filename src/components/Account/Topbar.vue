@@ -1,16 +1,17 @@
 <template>
   <div class="topbar">
     <Icon name="left" @click.native="goBack"/>
-    <span>记账</span>
+    <span v-if="centerContext">记账</span>
     <Icon/>
   </div>
 </template>
 
 <script lang="ts">
-import {Vue, Component} from "vue-property-decorator";
+import {Vue, Component, Prop} from "vue-property-decorator";
 
 @Component
 export default class Topbar extends Vue {
+  @Prop()  centerContext!: boolean
   goBack() {
     this.$router.back();
   }
