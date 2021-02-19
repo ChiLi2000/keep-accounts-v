@@ -1,5 +1,5 @@
 <template>
-  <div class="outer">
+  <div class="outer" :style="{height:h+'px'}">
     <Topbar :center-context="true"/>
     <div class="tab_date">
       <Tab class-prefix="tab" :value.sync="record.category"/>
@@ -27,6 +27,7 @@ import dayjs from "dayjs";
   components: {Topbar, Tab, DateSection, TagsSection, Notes, NumberPad}
 })
 export default class RecordEdit extends Vue {
+  h = document.body.clientHeight;
   @Prop() record!: newRecordItem;
   @Prop() recordId?: number;
   placeholder = dayjs(new Date().toISOString()).format("MM-DD");
