@@ -33,7 +33,12 @@ export default class RecordEdit extends Vue {
 
   saveRecord() {
     if (this.record.amount === 0) {
-      alert("请输入具体金额");
+      this.$message({
+        message: "请输入具体金额",
+        type: "warning",
+        duration: 1000,
+        center: true,
+      });
     } else {
       if (this.recordId) {
         this.$store.commit("updateRecord", {idR: this.recordId, newRecord: this.record});
@@ -41,6 +46,8 @@ export default class RecordEdit extends Vue {
         this.$message({
           message: "修改成功",
           type: "success",
+          duration: 1000,
+          center: true,
         });
       } else {
         this.$store.commit("createRecord", this.record);
@@ -50,6 +57,7 @@ export default class RecordEdit extends Vue {
             type: "success",
             duration: 1000,
             center: true,
+
           });
           this.$router.push({path: "/"});
         }
@@ -99,4 +107,5 @@ export default class RecordEdit extends Vue {
     }
   }
 }
+
 </style>

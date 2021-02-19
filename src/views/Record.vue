@@ -149,13 +149,4 @@ export default class Record extends mixins(Common) {
   }
 }
 
-
-::v-deep .element.style {
-  top: 40vh;
-}
-::v-deep .element.style .el-message {
-  min-width:0;
-}
-
-
 </style>

@@ -134,7 +134,7 @@ export default class TagsSection extends Vue {
   }
 
   addLiFlag(id: string) {
-    return parseInt(id) > 22;
+    return parseInt(id) > 23;
   }
 
 }

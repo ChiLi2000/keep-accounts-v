@@ -37,6 +37,7 @@ const store = new Vuex.Store({
       store.commit("createTag", {genre: "-", name: "其它", value: "其它"});
       store.commit("createTag", {genre: "+", name: "退款", value: "退款"});
       store.commit("createTag", {genre: "+", name: "工资 ", value: "工资"});
+      store.commit("createTag", {genre: "+", name: "红包", value: "红包"});
       store.commit("createTag", {genre: "+", name: "转账", value: "转账"});
       store.commit("createTag", {genre: "+", name: "人情", value: "人情"});
       store.commit("createTag", {genre: "+", name: "其它", value: "其它"});
